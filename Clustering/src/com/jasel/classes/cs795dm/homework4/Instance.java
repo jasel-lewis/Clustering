@@ -29,13 +29,13 @@ public class Instance implements Comparable<Instance> {
 	}
 	
 	
-	public int getEducation() throws InvalidEducationException {
+	public int getEducation() throws InvalidEducationValueException {
 		if (education.compareTo("BS") == 0) {
 			return 1;
 		} else if (education.compareTo("MS") == 0) {
 			return 2;
 		} else {
-			throw new InvalidEducationException("Education attribute is not \"BS\" or \"MS\".");
+			throw new InvalidEducationValueException("Education attribute is not \"BS\" or \"MS\".");
 		}
 	}
 	

@@ -5,8 +5,10 @@ import java.util.ArrayList;
 
 public class Cluster {
 	private ArrayList<Instance> instances = new ArrayList<Instance>();
+	private String name = null;
 	
-	public Cluster(Instance instance) {
+	public Cluster(String name, Instance instance) {
+		this.name = name;
 		instances.add(instance);
 	}
 	
@@ -31,6 +33,11 @@ public class Cluster {
 	}
 	
 	
+	public String getName() {
+		return name;
+	}
+	
+	
 	public String getInstanceNames() {
 		StringBuilder sb = new StringBuilder();
 		int size = instances.size();
@@ -47,7 +54,7 @@ public class Cluster {
 	}
 	
 	
-	public Instance getCentroid(ArrayList<Instance> cluster) throws InvalidEducationException {
+	public Instance getCentroid() throws InvalidEducationValueException {
 		Instance instance = null;
 		
 		int size = instances.size();

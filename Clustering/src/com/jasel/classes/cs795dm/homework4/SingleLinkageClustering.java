@@ -8,9 +8,9 @@ public class SingleLinkageClustering {
 	
 	/**
 	 * @param args
-	 * @throws InvalidEducationException 
+	 * @throws InvalidEducationValueException 
 	 */
-	public static void main(String[] args) throws InvalidEducationException {
+	public static void main(String[] args) throws InvalidEducationValueException {
 		Instance minA = null;
 		Instance minB = null;
 		
@@ -130,7 +130,7 @@ public class SingleLinkageClustering {
 	}
 	
 	
-	private static double distance(Instance a, Instance b) throws InvalidEducationException {
+	private static double distance(Instance a, Instance b) throws InvalidEducationValueException {
 		double distAge = distance(a.getAge(), b.getAge());
 		int distEducation = distance(a.getEducation(), b.getEducation());
 		double distGPA = distance(a.getGPA(), b.getGPA());
