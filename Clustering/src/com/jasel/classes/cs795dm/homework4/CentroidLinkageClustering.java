@@ -9,7 +9,6 @@ public class CentroidLinkageClustering {
 	 * @throws InvalidEducationValueException 
 	 */
 	public static void main(String[] args) throws InvalidEducationValueException {
-		final double HIGH_MIN = 100000000.0;
 		final ClusterNumberFormat cnf = new ClusterNumberFormat();
 		
 		Cluster tempClusterI = null;
@@ -20,7 +19,7 @@ public class CentroidLinkageClustering {
 		Instance tempClusterJCentroid = null;
 		
 		double dist = 0.0;
-		double minDist = HIGH_MIN;
+		double minDist = Double.POSITIVE_INFINITY;
 		
 		ArrayList<Cluster> clusters = new ArrayList<Cluster>();
 		
