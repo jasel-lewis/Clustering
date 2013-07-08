@@ -2,6 +2,8 @@ package com.jasel.classes.cs795dm.homework4;
 
 
 public class Instance implements Comparable<Instance> {
+	private final ClusterNumberFormat cnf = new ClusterNumberFormat();
+	
 	private String name;
 	private double age = 0.0;
 	private String education = "BS";
@@ -63,12 +65,7 @@ public class Instance implements Comparable<Instance> {
 	
 	@Override
 	public String toString() {
-		return
-			"         Name: " + name +
-			"\n          Age: " + age + 
-			"\n    Education: " + education + 
-			"\n          GPA: " + gpa +
-			"\n   Experience: " + experience +
-			"\n       Salary: " + salary;
+		return "Name:" + name + ";Age:" + cnf.format(age) + ";Educ:" + education + ";GPA:" + cnf.format(gpa) +
+				";Exper:" + cnf.format(experience) + ";Sal:" + cnf.format(salary);
 	}
 }
