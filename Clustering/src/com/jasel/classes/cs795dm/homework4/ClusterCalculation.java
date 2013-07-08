@@ -1,7 +1,5 @@
 package com.jasel.classes.cs795dm.homework4;
 
-import java.util.zip.DataFormatException;
-
 public final class ClusterCalculation {
 	public static double distance(Instance a, Instance b) throws InvalidEducationValueException {
 		double distAge = distance(a.getAge(), b.getAge());
