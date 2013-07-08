@@ -38,8 +38,8 @@ public class Cluster {
 	}
 	
 	
-	public String getInstanceNames() {
-		StringBuilder sb = new StringBuilder();
+	public String getInstancesNameSet() {
+		StringBuilder sb = new StringBuilder("{");
 		int size = instances.size();
 		
 		for (int i = 0; i < size; i++) {
@@ -49,6 +49,8 @@ public class Cluster {
 				sb.append(",");
 			}
 		}
+		
+		sb.append("}");
 		
 		return sb.toString();
 	}
