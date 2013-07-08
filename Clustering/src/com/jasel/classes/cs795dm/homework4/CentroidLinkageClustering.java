@@ -4,16 +4,20 @@ import java.util.ArrayList;
 
 
 public class CentroidLinkageClustering {
-	private final static double HIGH_MIN = 100000000.0;
-
 	/**
 	 * @param args
-	 * @throws InvalidEducationException 
+	 * @throws InvalidEducationValueException 
 	 */
-	public static void main(String[] args) throws InvalidEducationException {
+	public static void main(String[] args) throws InvalidEducationValueException {
+		final double HIGH_MIN = 100000000.0;
+		final ClusterNumberFormat cnf = new ClusterNumberFormat();
+		
+		Cluster tempClusterI = null;
+		Cluster tempClusterJ = null;
 		Cluster minA = null;
 		Cluster minB = null;
-		Instance centroid = null;
+		Instance tempClusterICentroid = null;
+		Instance tempClusterJCentroid = null;
 		
 		double dist = 0.0;
 		double minDist = HIGH_MIN;
@@ -29,107 +33,45 @@ public class CentroidLinkageClustering {
 		clusters.add(new Cluster("7", new Instance("g", 0.1333, "BS", 0.0943, 0.2151, 0.2247)));
 		clusters.add(new Cluster("8", new Instance("h", 0.1333, "MS", 0.1509, 0.1613, 0.1685)));
 		
-		for (int i = 0; i < clusters.size(); i++) {
-			for (int j = i + 1; j < clusters.size(); j++) {
-				dist = distance(clusters.get(i).getCentroid(), clusters.get(j).getCentroid());
-				
-				if ((minA == null) || (minB == null) || (dist < min)) {
-					minDist = dist;
-					minA = clusters.get(i);
-					minB = clusters.get(j);
-				}
-				
-				System.out.print("DIST(" + instances.get(i).getName() + "," + instances.get(j).getName() + ") = ");
-				System.out.println(dist);
-			}
-		}
-			
-		System.out.println("Minimum is between " + minA.getName() + " and " + minB.getName() + " with value " + min);
-		System.out.println("Merging cluster " + minB.getName() + " into cluster " + minA.getName() + ".");
-		
-		// Add the two instances with the minimum distance to the cluster
-		cluster.add(minA);
-		cluster.add(minB);
-		
-		System.out.print("Instances in cluster: {");
-		for (int c = 0; c < cluster.size(); c++) {
-			System.out.print(cluster.get(c).getName());
-			
-			if (c < (cluster.size() - 1)) {
-				System.out.print(",");
-			}
-		}
-		
-		System.out.print("}\n");
-		
-		// Remove the two instances from the available (not-yet-clustered) instances
-		instances.remove(minA);
-		instances.remove(minB);
-		
-		System.out.print("Instances not yet clustered: {");
-		for (int i = 0; i < instances.size(); i++) {
-			System.out.print(instances.get(i).getName());
-			
-			if (i < (instances.size() - 1)) {
-				System.out.print(",");
-			}
-		}
-		
-		System.out.print("}\n");
-		
-		while (instances.size() > 0) {
-			min = HIGH_MIN;
-			
-			centroid = getCentroid(cluster);
-			
-			for (int i = 0; i < instances.size(); i++) {
-				dist = distance(centroid, instances.get(i));
-				
-				if (dist < min) {
-					min = dist;
-					minA = instances.get(i);
-				}
-				
-				System.out.print("DIST(" + centroid.getName() + "," + instances.get(i).getName() + ") = ");
-				System.out.println(dist);
-			}
-			
-			System.out.println("Instance with minimum distance to cluster's centroid is " + minA.getName() +
-					" with distance " + min);
-			System.out.println("Bringing " + minA.getName() + " into the cluster.");
-			
-			// Add to the cluster the closest instance (having the minimum distance to the centroid of the cluster)
-			cluster.add(minA);
-			
-			System.out.print("Instances in cluster: {");
-			for (int c = 0; c < cluster.size(); c++) {
-				System.out.print(cluster.get(c).getName());
-				
-				if (c < (cluster.size() - 1)) {
-					System.out.print(",");
+		while (clusters.size() > 1) {
+			for (int i = 0; i < clusters.size(); i++) {
+				for (int j = i + 1; j < clusters.size(); j++) {
+					tempClusterI = clusters.get(i);
+					tempClusterICentroid = tempClusterI.getCentroid();
+					tempClusterJ = clusters.get(j);
+					tempClusterJCentroid = tempClusterJ.getCentroid();
+					
+					dist = distance(tempClusterICentroid, tempClusterJCentroid);
+					
+					if ((minA == null) || (minB == null) || (dist < minDist)) {
+						minDist = dist;
+						minA = tempClusterI;
+						minB = tempClusterJ;
+					}
+					
+					System.out.print("Cluster " + tempClusterI.getName() + " contains instance(s) " + tempClusterI.getInstancesNameSet() +
+							" with centroid " + tempClusterICentroid.toString());
+					System.out.print("Cluster " + tempClusterJ.getName() + " contains instance(s) " + tempClusterJ.getInstancesNameSet() +
+							" with centroid " + tempClusterJCentroid.toString());
+					
+					System.out.println("DIST(" + tempClusterI.getName() + "," + tempClusterJ.getName() + ") = " + cnf.format(dist));
 				}
 			}
-			
-			System.out.print("}\n");
-			
-			// Remove the identified instance from the available (not-yet-clustered) instances
-			instances.remove(minA);
-			
-			System.out.print("Instances not yet clustered: {");
-			for (int i = 0; i < instances.size(); i++) {
-				System.out.print(instances.get(i).getName());
 				
-				if (i < (instances.size() - 1)) {
-					System.out.print(",");
-				}
-			}
+			System.out.println("Minimum exists between the centroids of clusters " + minA.getName() + " and " + minB.getName() +
+					" with a value of " + cnf.format(minDist));
+			System.out.println("Merging cluster " + minB.getName() + " into cluster " + minA.getName() + ".");
 			
-			System.out.print("}\n");
+			// minA and minB are the two clusters with the closest centroids. Merge B into A and remove B from the list of Clusters.
+			minA.merge(minB);
+			clusters.remove(minB);
+			
+			System.out.println("Cluster " + minA.getName() + " now contains instance(s) " + minA.getInstancesNameSet());
 		}
 	}
 	
 	
-	private static double distance(Instance a, Instance b) throws InvalidEducationException {
+	private static double distance(Instance a, Instance b) throws InvalidEducationValueException {
 		double distAge = distance(a.getAge(), b.getAge());
 		int distEducation = distance(a.getEducation(), b.getEducation());
 		double distGPA = distance(a.getGPA(), b.getGPA());
