@@ -9,7 +9,6 @@ public class AverageLinkageClustering {
 	 * @throws InvalidEducationValueException 
 	 */
 	public static void main(String[] args) throws InvalidEducationValueException {
-		final double HIGH_MIN = 100000000.0;
 		final ClusterNumberFormat cnf = new ClusterNumberFormat();
 		
 		Cluster tempClusterI = null;
@@ -18,11 +17,11 @@ public class AverageLinkageClustering {
 		Cluster minClusterB = null;
 		Instance tempClusterIInstance = null;
 		Instance tempClusterJInstance = null;
-		Instance minInstanceA = null;
-		Instance minInstanceB = null;
 		
 		double dist = 0.0;
-		double minDist = HIGH_MIN;
+		double minDist = 0.0;
+		double avgDist = Double.POSITIVE_INFINITY;
+		int count = 1;
 		
 		ArrayList<Cluster> clusters = new ArrayList<Cluster>();
 		
@@ -49,29 +48,38 @@ public class AverageLinkageClustering {
 							tempClusterIInstance = tempClusterI.get(k);
 							tempClusterJInstance = tempClusterJ.get(l);
 							
-							dist = ClusterCalculation.distance(tempClusterI.get(k), tempClusterJ.get(l));
+							// Find distance between the two instances and add it to running total for
+							// the current, two, Clusters
+							dist += ClusterCalculation.distance(tempClusterI.get(k), tempClusterJ.get(l));
+							count++;
 							
-							System.out.println("DIST(" + tempClusterIInstance.getName() + "," + tempClusterJ.getName() + ") = " +
-									cnf.format(dist));
-							
-							if (dist < minDist) {
-								minDist = dist;
-								minClusterA = tempClusterI;
-								minInstanceA = tempClusterIInstance;
-								minClusterB = tempClusterJ;
-								minInstanceB = tempClusterJInstance;
-							}
+							System.out.println("DIST(" + tempClusterIInstance.getName() + "," + tempClusterJInstance.getName() +
+									") = " + cnf.format(dist));
 						}
 					}
+					
+					// Find average of the distances
+					avgDist = dist / count;
+					
+					System.out.println("Average distance found to be " + cnf.format(avgDist));
+					
+					if ((minClusterA == null) || (minClusterB == null) || (avgDist < minDist)) {
+						minDist = avgDist;
+						minClusterA = tempClusterI;
+						minClusterB = tempClusterJ;
+					}
+					
+					dist = 0.0;
+					avgDist = Double.POSITIVE_INFINITY;
+					count = 0;
 				}
 			}
 				
-			System.out.println("Minimum exists between Instance " + minInstanceA.getName() + " of Cluster " + minClusterA.getName() +
-					" and Instance " + minInstanceB.getName() + " of Cluster " + minClusterB.getName() +
-					" with a value of " + cnf.format(minDist));
+			System.out.println("Minimum average distance exists between Cluster " + minClusterA.getName() +
+					" and Cluster " + minClusterB.getName() + " with a value of " + cnf.format(minDist));
 			System.out.println("Merging cluster " + minClusterB.getName() + " into cluster " + minClusterA.getName());
 			
-			// minA and minB are the two clusters with the closest member Instance(s).
+			// minA and minB are the two clusters with the closest average distance.
 			// Merge B into A and remove B from the list of Clusters.
 			minClusterA.merge(minClusterB);
 			clusters.remove(minClusterB);
