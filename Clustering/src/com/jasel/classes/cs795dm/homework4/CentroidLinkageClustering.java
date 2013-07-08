@@ -41,7 +41,7 @@ public class CentroidLinkageClustering {
 					tempClusterJ = clusters.get(j);
 					tempClusterJCentroid = tempClusterJ.getCentroid();
 					
-					dist = distance(tempClusterICentroid, tempClusterJCentroid);
+					dist = ClusterCalculation.distance(tempClusterICentroid, tempClusterJCentroid);
 					
 					if ((minA == null) || (minB == null) || (dist < minDist)) {
 						minDist = dist;
@@ -60,7 +60,7 @@ public class CentroidLinkageClustering {
 				
 			System.out.println("Minimum exists between the centroids of clusters " + minA.getName() + " and " + minB.getName() +
 					" with a value of " + cnf.format(minDist));
-			System.out.println("Merging cluster " + minB.getName() + " into cluster " + minA.getName() + ".");
+			System.out.println("Merging cluster " + minB.getName() + " into cluster " + minA.getName());
 			
 			// minA and minB are the two clusters with the closest centroids. Merge B into A and remove B from the list of Clusters.
 			minA.merge(minB);
@@ -68,27 +68,5 @@ public class CentroidLinkageClustering {
 			
 			System.out.println("Cluster " + minA.getName() + " now contains instance(s) " + minA.getInstancesNameSet());
 		}
-	}
-	
-	
-	private static double distance(Instance a, Instance b) throws InvalidEducationValueException {
-		double distAge = distance(a.getAge(), b.getAge());
-		int distEducation = distance(a.getEducation(), b.getEducation());
-		double distGPA = distance(a.getGPA(), b.getGPA());
-		double distExperience = distance(a.getExperience(), b.getExperience());
-		double distSalary = distance(a.getSalary(), b.getSalary());
-		
-		return Math.sqrt((distAge * distAge) + (distEducation * distEducation) + (distGPA * distGPA) +
-				(distExperience * distExperience) + (distSalary * distSalary));
-	}
-	
-	
-	private static double distance(double a, double b) {
-		return (b - a);
-	}
-	
-	
-	private static int distance(int a, int b) {
-		return (b - a);
 	}
 }
