@@ -129,30 +129,4 @@ public class AverageLinkageClustering {
 			System.out.print("}\n");
 		}
 	}
-	
-	
-	private static Instance average(Instance a, Instance b) throws DataFormatException {
-		return new Instance("x",
-				average(a.getAge(), b.getAge()),
-				averageEducation(a.getEducation(), b.getEducation()),
-				average(a.getGPA(), b.getGPA()),
-				average(a.getExperience(), b.getExperience()),
-				average(a.getSalary(), b.getSalary()));
-	}
-	
-	
-	private static double average(double a, double b) {
-		return ((a + b) / 2);
-	}
-	
-	
-	private static String averageEducation(int a, int b) {
-		double average = ((a + b) / 2);
-		
-		if (average < 1.5) {
-			return "BS";
-		} else {
-			return "MS";
-		}
-	}
 }
