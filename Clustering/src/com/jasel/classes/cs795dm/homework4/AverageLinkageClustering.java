@@ -83,7 +83,7 @@ public class AverageLinkageClustering {
 			
 			for (int c = 0; c < cluster.size(); c++) {
 				for (int i = 0; i < instances.size(); i++) {
-					dist = distance(cluster.get(c), instances.get(i));
+					dist = ClusterCalculation.distance(cluster.get(c), instances.get(i));
 					
 					if (dist < min) {
 						min = dist;
@@ -128,28 +128,6 @@ public class AverageLinkageClustering {
 			
 			System.out.print("}\n");
 		}
-	}
-	
-	
-	private static double distance(Instance a, Instance b) throws DataFormatException {
-		double distAge = distance(a.getAge(), b.getAge());
-		int distEducation = distance(a.getEducation(), b.getEducation());
-		double distGPA = distance(a.getGPA(), b.getGPA());
-		double distExperience = distance(a.getExperience(), b.getExperience());
-		double distSalary = distance(a.getSalary(), b.getSalary());
-		
-		return Math.sqrt((distAge * distAge) + (distEducation * distEducation) + (distGPA * distGPA) +
-				(distExperience * distExperience) + (distSalary * distSalary));
-	}
-	
-	
-	private static double distance(double a, double b) {
-		return (b - a);
-	}
-	
-	
-	private static int distance(int a, int b) {
-		return (b - a);
 	}
 	
 	
