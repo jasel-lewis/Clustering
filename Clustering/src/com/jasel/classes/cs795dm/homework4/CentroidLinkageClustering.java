@@ -10,6 +10,7 @@ public class CentroidLinkageClustering {
 	 */
 	public static void main(String[] args) throws InvalidEducationValueException {
 		final ClusterNumberFormat cnf = new ClusterNumberFormat();
+		final ClusterTestData ctd = new ClusterTestData();
 		
 		Cluster tempClusterI = null;
 		Cluster tempClusterJ = null;
@@ -21,7 +22,7 @@ public class CentroidLinkageClustering {
 		double dist = 0.0;
 		double minDist = Double.POSITIVE_INFINITY;
 		
-		ArrayList<Cluster> clusters = ClusterTestData.getClusters();
+		ArrayList<Cluster> clusters = ctd.getClusters();
 		
 		while (clusters.size() > 1) {
 			for (int i = 0; i < clusters.size(); i++) {
@@ -39,24 +40,26 @@ public class CentroidLinkageClustering {
 						minB = tempClusterJ;
 					}
 					
-					System.out.print("Cluster " + tempClusterI.getName() + " contains instance(s) " + tempClusterI.getInstancesNameSet() +
+					System.out.println("Cluster " + tempClusterI.getName() + " contains instance(s) " + tempClusterI.getInstancesNameSet() +
 							" with centroid " + tempClusterICentroid.toString());
-					System.out.print("Cluster " + tempClusterJ.getName() + " contains instance(s) " + tempClusterJ.getInstancesNameSet() +
+					System.out.println("Cluster " + tempClusterJ.getName() + " contains instance(s) " + tempClusterJ.getInstancesNameSet() +
 							" with centroid " + tempClusterJCentroid.toString());
 					
-					System.out.println("DIST(" + tempClusterI.getName() + "," + tempClusterJ.getName() + ") = " + cnf.format(dist));
+					System.out.println("   DIST(" + tempClusterI.getName() + "," + tempClusterJ.getName() + ") = " + cnf.format(dist));
 				}
 			}
 				
-			System.out.println("Minimum exists between the centroids of clusters " + minA.getName() + " and " + minB.getName() +
-					" with a value of " + cnf.format(minDist));
-			System.out.println("Merging cluster " + minB.getName() + " into cluster " + minA.getName());
+			System.out.println("*** Minimum exists between the centroids of clusters " + minA.getName() + " and " + minB.getName() +
+					" with a distance of " + cnf.format(minDist));
+			System.out.print("  * Merging cluster " + minB.getName() + " into cluster " + minA.getName() + ": ");
 			
 			// minA and minB are the two clusters with the closest centroids. Merge B into A and remove B from the list of Clusters.
 			minA.merge(minB);
 			clusters.remove(minB);
 			
 			System.out.println("Cluster " + minA.getName() + " now contains instance(s) " + minA.getInstancesNameSet());
+			
+			minDist = Double.POSITIVE_INFINITY;
 		}
 	}
 }
