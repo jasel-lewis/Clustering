@@ -10,6 +10,7 @@ public class SingleLinkageClustering {
 	 */
 	public static void main(String[] args) throws InvalidEducationValueException {
 		final ClusterNumberFormat cnf = new ClusterNumberFormat();
+		final ClusterTestData ctd = new ClusterTestData();
 		
 		Cluster tempClusterI = null;
 		Cluster tempClusterJ = null;
@@ -23,7 +24,8 @@ public class SingleLinkageClustering {
 		double dist = 0.0;
 		double minDist = Double.POSITIVE_INFINITY;
 		
-		ArrayList<Cluster> clusters = ClusterTestData.getClusters();
+		ArrayList<Cluster> clusters = ctd.getClusters();
+		System.err.println(clusters.size());
 		
 		while (clusters.size() > 1) {
 			for (int i = 0; i < clusters.size(); i++) {
@@ -39,9 +41,9 @@ public class SingleLinkageClustering {
 							tempClusterIInstance = tempClusterI.get(k);
 							tempClusterJInstance = tempClusterJ.get(l);
 							
-							dist = ClusterCalculation.distance(tempClusterI.get(k), tempClusterJ.get(l));
+							dist = ClusterCalculation.distance(tempClusterIInstance, tempClusterJInstance);
 							
-							System.out.println("DIST(" + tempClusterIInstance.getName() + "," + tempClusterJ.getName() + ") = " +
+							System.out.println("   DIST(" + tempClusterIInstance.getName() + "," + tempClusterJInstance.getName() + ") = " +
 									cnf.format(dist));
 							
 							if (dist < minDist) {
@@ -56,17 +58,19 @@ public class SingleLinkageClustering {
 				}
 			}
 				
-			System.out.println("Minimum exists between Instance " + minInstanceA.getName() + " of Cluster " + minClusterA.getName() +
+			System.out.println("*** Minimum exists between Instance " + minInstanceA.getName() + " of Cluster " + minClusterA.getName() +
 					" and Instance " + minInstanceB.getName() + " of Cluster " + minClusterB.getName() +
-					" with a value of " + cnf.format(minDist));
-			System.out.println("Merging cluster " + minClusterB.getName() + " into cluster " + minClusterA.getName());
+					" with a distance of " + cnf.format(minDist));
+			System.out.print("  * Merging cluster " + minClusterB.getName() + " into cluster " + minClusterA.getName() + ": ");
 			
-			// minA and minB are the two clusters with the closest member Instance(s).
+			// minClusterA and minClusterB are the two clusters with the closest member Instance(s).
 			// Merge B into A and remove B from the list of Clusters.
 			minClusterA.merge(minClusterB);
 			clusters.remove(minClusterB);
 			
 			System.out.println("Cluster " + minClusterA.getName() + " now contains instance(s) " + minClusterA.getInstancesNameSet());
+			
+			minDist = Double.POSITIVE_INFINITY;
 		}
 	}
 }
