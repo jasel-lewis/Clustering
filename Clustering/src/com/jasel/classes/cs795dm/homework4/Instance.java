@@ -65,7 +65,7 @@ public class Instance implements Comparable<Instance> {
 	
 	@Override
 	public String toString() {
-		return "Name:" + name + ";Age:" + cnf.format(age) + ";Educ:" + education + ";GPA:" + cnf.format(gpa) +
-				";Exper:" + cnf.format(experience) + ";Sal:" + cnf.format(salary);
+		return "{Name:" + name + ";Age:" + cnf.format(age) + ";Educ:" + education + ";GPA:" + cnf.format(gpa) +
+				";Exper:" + cnf.format(experience) + ";Sal:" + cnf.format(salary) + "}";
 	}
 }
