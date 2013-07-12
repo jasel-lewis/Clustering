@@ -25,7 +25,6 @@ public class SingleLinkageClustering {
 		double minDist = Double.POSITIVE_INFINITY;
 		
 		ArrayList<Cluster> clusters = ctd.getClusters();
-		System.err.println(clusters.size());
 		
 		while (clusters.size() > 1) {
 			for (int i = 0; i < clusters.size(); i++) {
