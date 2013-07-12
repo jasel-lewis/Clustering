@@ -13,6 +13,7 @@ public class ClusterNumberFormat {
 		if (numberFormat instanceof DecimalFormat) {
 			((DecimalFormat) numberFormat).setRoundingMode(RoundingMode.HALF_UP);
 			((DecimalFormat) numberFormat).setMaximumFractionDigits(DECIMAL_PLACES);
+			((DecimalFormat) numberFormat).applyPattern("###0.0000");
 		}
 	}
 	
