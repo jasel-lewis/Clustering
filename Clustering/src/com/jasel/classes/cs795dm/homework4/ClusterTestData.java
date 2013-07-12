@@ -3,9 +3,9 @@ package com.jasel.classes.cs795dm.homework4;
 import java.util.ArrayList;
 
 public final class ClusterTestData {
-	static ArrayList<Cluster> clusters = new ArrayList<Cluster>();
+	private ArrayList<Cluster> clusters = new ArrayList<Cluster>();
 	
-	public ClusterTestData (ArrayList<Cluster> clusters) {
+	public ClusterTestData () {
 		clusters.add(new Cluster("1", new Instance("a", 0.1167, "BS", 0.1321, 0.0538, 0.0787)));
 		clusters.add(new Cluster("2", new Instance("b", 0.0833, "MS", 0.1132, 0.0000, 0.0562)));
 		clusters.add(new Cluster("3", new Instance("c", 0.1000, "BS", 0.0943, 0.0645, 0.1124)));
@@ -17,7 +17,7 @@ public final class ClusterTestData {
 	}
 	
 	
-	public static ArrayList<Cluster> getClusters() {
+	public ArrayList<Cluster> getClusters() {
 		return clusters;
 	}
 }
