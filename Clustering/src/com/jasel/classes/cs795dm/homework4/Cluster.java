@@ -43,7 +43,7 @@ public class Cluster {
 		int size = instances.size();
 		
 		for (int i = 0; i < size; i++) {
-			sb.append(instances.get(i));
+			sb.append(instances.get(i).getName());
 			
 			if (i < (size - 1)) {
 				sb.append(",");
